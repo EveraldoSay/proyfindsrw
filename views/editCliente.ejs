@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Cliente</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Editar Cliente</h1>
+        <form action="/updateCliente" method="POST">
+            <input type="hidden" name="Id" value="<%= cliente.IdCliente %>">
+            <div class="mb-3">
+                <label for="Nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="Nombre" name="Nombre" value="<%= cliente.Nombre %>" required>
+            </div>
+            <div class="mb-3">
+                <label for="Direccion" class="form-label">Dirección</label>
+                <input type="text" class="form-control" id="Direccion" name="Direccion" value="<%= cliente.Direccion %>" required>
+            </div>
+            <div class="mb-3">
+                <label for="Telefono" class="form-label">Teléfono</label>
+                <input type="text" class="form-control" id="Telefono" name="Telefono" value="<%= cliente.Telefono %>">
+            </div>
+            <div class="mb-3">
+                <label for="Email" class="form-label">Correo Electrónico</label>
+                <input type="email" class="form-control" id="Email" name="Email" value="<%= cliente.Email %>">
+            </div>
+            <div class="mb-3">
+                <label for="Sexo" class="form-label">Sexo</label>
+                <select id="Sexo" name="Sexo" class="form-select" required>
+                    <option value="H" <%= cliente.Sexo === 'H' ? 'selected' : '' %>>Hombre</option>
+                    <option value="M" <%= cliente.Sexo === 'M' ? 'selected' : '' %>>Mujer</option>
+                    </select>
+            </div>
+            <div class="mb-3">
+                <label for="NIT" class="form-label">NIT</label>
+                <input type="text" class="form-control" id="NIT" name="NIT" value="<%= cliente.NIT %>">
+            </div>
+            <div class="mb-3">
+                <label for="CUI" class="form-label">CUI</label>
+                <input type="text" class="form-control" id="CUI" name="CUI" value="<%= cliente.CUI %>">
+            </div>
+            <div class="mb-3">
+                <label for="SeguroMedico" class="form-label">Seguro Médico</label>
+                <input type="text" class="form-control" id="SeguroMedico" name="SeguroMedico" value="<%= cliente.SeguroMedico %>">
+            </div>
+            <div class="mb-3">
+                <label for="NumeroPoliza" class="form-label">Número de Poliza</label>
+                <input type="text" class="form-control" id="NumeroPoliza" name="NumeroPoliza" value="<%= cliente.NumeroPoliza %>">
+            </div>
+            <button type="submit" class="btn btn-primary">Actualizar</button>
+            <a href="/" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Producto</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Editar Producto</h1>
+        <form action="/updateProducto" method="POST">
+            <input type="hidden" name="Id" value="<%= producto.IdProd %>">
+            <div class="form-group">
+                <label for="IdCategoria">Empresa</label>
+                <select name="IdCategoria" class="form-control" required>
+                    <% categorias.forEach(categoria => { %>
+                        <option value="<%= categoria.IdCategoria %>" <%= producto.IdCategoria === categoria.IdCategoria ? 'selected' : '' %>><%= categoria.Nombre %></option>
+                    <% }) %>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="CodigoProducto">Codigo Producto</label>
+                <input type="text" class="form-control" name="CodigoProducto" value="<%= producto.CodigoProducto %>" required>
+            </div>
+            <div class="form-group">
+                <label for="Nombre">Nombre</label>
+                <input type="text" class="form-control" name="Nombre" value="<%= producto.Nombre %>" required>
+            </div>
+            <div class="form-group">
+                <label for="Descripcion">Descripción</label>
+                <input type="text" class="form-control" name="Descripcion" value="<%= producto.Descripcion %>" required>
+            </div>
+            <div class="form-group">
+                <label for="Precio">Precio</label>
+                <input type="text" class="form-control" name="Precio" value="<%= producto.Precio %>" required>
+            </div>
+            <div class="form-group">
+                <label for="Impuestos">Impuestos</label>
+                <input type="text" class="form-control" name="Impuestos" value="<%= producto.Impuestos %>" required>
+            </div>
+            <div class="form-group">
+                <label for="NumeroSerie">Número de Serie</label>
+                <input type="text" class="form-control" name="NumeroSerie" value="<%= producto.NumeroSerie %>" required>
+            </div>
+            <div class="form-group">
+                <label for="Stock">Stock</label>
+                <input type="text" class="form-control" name="Stock" value="<%= producto.Stock %>" required>
+            </div>          
+            <button type="submit" class="btn btn-success">Actualizar</button>
+            <a href="/verProducto" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</body>
+</html>

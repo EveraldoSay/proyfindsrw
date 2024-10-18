@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ventas Realizadas</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+    <%- include('partials/navbar') %>
+    
+    <div class="container mt-5">
+        <h2 class="mb-4">Ventas Realizadas</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID Venta</th>
+                    <th>Fecha</th>
+                    <th>Cliente</th>
+                    <th>Total</th>
+                    <th>Forma de Pago</th>
+                    <th>Anticipo</th>
+                    <th>Descuento</th>
+                    <th>Productos</th> <!-- Nueva columna para mostrar productos -->
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (ventas.length > 0) { %>
+                    <% ventas.forEach(venta => { %>
+                        <tr>
+                            <td><%= venta.IdVenta %></td>
+                            <td><%= venta.Fecha %></td>
+                            <td><%= venta.ClienteNombre %></td>
+                            <td><%= venta.Total %></td>
+                            <td><%= venta.FormaPago %></td>
+                            <td><%= venta.Anticipo %></td>
+                            <td><%= venta.Descuento %></td>
+                            <td>
+                                <!-- Mostrar los detalles de productos asociados a la venta -->
+                                <ul>
+                                    <% venta.detalleventas.forEach(detalle => { %>
+                                        <li>Producto ID: <%= detalle.IdProd %> - Cantidad: <%= detalle.Cantidad %></li>
+                                    <% }) %>
+                                </ul>
+                            </td>
+                            <td>
+                                <!-- Botón para regenerar factura -->
+                                <a href="/regenerarFactura/<%= venta.IdVenta %>" class="btn btn-outline-primary btn-sm">Regenerar Factura</a>
+                            </td>
+                        </tr>
+                    <% }) %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="8" class="text-center">No se encontraron ventas</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
