@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Productos</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    
+    <%- include('partials/navbar') %>
+
+    <div class="container mt-4">
+        <h1>Lista de Productos</h1>
+        <a href="/createProducto" class="btn btn-primary mb-2">Agregar Producto</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Categoria</th>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Impuestos</th>
+                    <th>No Serie</th>
+                    <th>Stock</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% data.forEach(producto => { %>
+                    <tr>
+                        <td><%= producto.IdProd %></td>
+                        <td><%= producto.IdCategoria %></td>
+                        <td><%= producto.CodigoProducto %></td>
+                        <td><%= producto.Nombre %></td>
+                        <td><%= producto.Descripcion %></td>
+                        <td><%= producto.Precio %></td>
+                        <td><%= producto.Impuestos %></td>
+                        <td><%= producto.NumeroSerie %></td>
+                        <td><%= producto.Stock %></td>
+                        <td>
+                            <a href="/editProducto/<%= producto.IdProd %>" class="btn btn-warning">Editar</a>
+                            <a href="/deleteProducto/<%= producto.IdProd %>" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');">Eliminar</a>  
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

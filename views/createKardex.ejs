@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Kardex</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Crear Kardex</h1>
+        <form action="/createKardex" method="POST">
+            <div class="form-group">
+                <label for="IdProd">Producto</label>
+                <select name="IdProd" class="form-control" required>
+
+                    <% productos.forEach(producto => { %>
+                        <option value="<%= producto.IdProd %>"><%= producto.Nombre %></option>
+                    <% }) %>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="CantidadInicial">Cantidad Inicial</label>
+                <input type="number" class="form-control" name="CantidadInicial" required>
+            </div>
+            <div class="form-group">
+                <label for="CantidadVendida">Cantidad Vendida</label>
+                <input type="number" class="form-control" name="CantidadVendida" value="0">
+            </div>
+            <div class="form-group">
+                <label for="CantidadRecibida">Cantidad Recibida</label>
+                <input type="number" class="form-control" name="CantidadRecibida" value="0">
+            </div>
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <a href="/verKardex" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Kardex</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+    <%- include('partials/navbar') %>
+
+    <div class="container mt-4">
+        <h1>Lista de Kardex</h1>
+        <a href="/createKardex" class="btn btn-primary mb-2">Agregar Kardex</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Producto</th>
+                    <th>Cantidad Inicial</th>
+                    <th>Cantidad Vendida</th>
+                    <th>Cantidad Recibida</th>
+                    <th>Cantidad Existente</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% kardexList.forEach(kardex => { %>
+                    <tr>
+                        <td><%= kardex.Id %></td>
+                        <td><%= kardex.NombreProducto %></td>
+                        <td><%= kardex.CantidadInicial %></td>
+                        <td><%= kardex.CantidadVendida %></td>
+                        <td><%= kardex.CantidadRecibida %></td>
+                        <td><%= kardex.CantidadExistente %></td>
+                        <td>
+                            <a href="/editKardex/<%= kardex.Id %>" class="btn btn-warning">Editar</a>
+                            <a href="/deleteKardex/<%= kardex.Id %>" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este registro de kardex?');">Eliminar</a>  
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

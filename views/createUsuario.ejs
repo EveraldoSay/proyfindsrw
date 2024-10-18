@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Usuario</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Crear Usuario</h1>
+        <form action="/saveUsuario" method="POST">
+            <div class="mb-3">
+                <label for="NombreUsuario" class="form-label">Nombre de Usuario</label>
+                <input type="text" class="form-control" id="NombreUsuario" name="NombreUsuario" required>
+            </div>
+            <div class="mb-3">
+                <label for="Contrasena" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="Contrasena" name="Contrasena" required>
+            </div>
+            <div class="mb-3">
+                <label for="Rol" class="form-label">Rol</label>
+                <input type="text" class="form-control" id="Rol" name="Rol" required>
+            </div>
+            <div class="mb-3">
+                <label for="Nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="Nombre" name="Nombre" required>
+            </div>
+            <div class="mb-3">
+                <label for="Apellido" class="form-label">Apellido</label>
+                <input type="text" class="form-control" id="Apellido" name="Apellido" required>
+            </div>
+            <div class="mb-3">
+                <label for="Email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="Email" name="Email" required>
+            </div>
+            <div class="mb-3">
+                <label for="Telefono" class="form-label">Telefono</label>
+                <input type="text" class="form-control" id="Telefono" name="Telefono" required>
+            </div>
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <a href="/verUsuario" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</body>
+
+</html>

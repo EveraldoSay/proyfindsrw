@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Producto</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Crear Producto</h1>
+        <form action="/createProducto" method="POST">
+            <div class="form-group">
+                <label for="IdCategoria">Categoría Producto</label>
+                <select name="IdCategoria" class="form-control" required>
+                    <!-- Iterar sobre las categorías pasadas por el controlador -->
+                    <% categorias.forEach(categoria => { %>
+                        <option value="<%= categoria.IdCategoria %>"><%= categoria.Nombre %></option>
+                    <% }) %>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="CodigoProducto" class="form-label">Código Producto</label>
+                <input type="text" class="form-control" id="CodigoProducto" name="CodigoProducto" required>
+            </div>
+            <div class="mb-3">
+                <label for="Nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="Nombre" name="Nombre" required>
+            </div>
+            <div class="mb-3">
+                <label for="Descripcion" class="form-label">Descripción</label>
+                <input type="text" class="form-control" id="Descripcion" name="Descripcion" required>
+            </div>
+            <div class="mb-3">
+                <label for="Precio" class="form-label">Precio</label>
+                <input type="text" class="form-control" id="Precio" name="Precio" required>
+            </div>
+            <div class="mb-3">
+                <label for="Impuestos" class="form-label">Impuestos</label>
+                <input type="text" class="form-control" id="Impuestos" name="Impuestos" required>
+            </div>
+            <div class="mb-3">
+                <label for="NumeroSerie" class="form-label">Número de Serie</label>
+                <input type="text" class="form-control" id="NumeroSerie" name="NumeroSerie" required>
+            </div>
+            <div class="mb-3">
+                <label for="Stock" class="form-label">Stock</label>
+                <input type="text" class="form-control" id="Stock" name="Stock" required>
+            </div>   
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <a href="/verProducto" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</body>
+</html>

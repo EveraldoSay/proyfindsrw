@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Devolución</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Editar Devolución</h1>
+        <form action="/updateDevolucion" method="POST">
+            <input type="hidden" name="IdDev" value="<%= devolucion.IdDev %>">
+            <div class="mb-3">
+                <label for="IdVenta" class="form-label">Venta</label>
+                <select name="IdVenta" id="IdVenta" class="form-select" required>
+                    <% ventas.forEach(function(venta) { %>
+                        <option value="<%= venta.IdVenta %>" <%= venta.IdVenta == devolucion.IdVenta ? 'selected' : '' %>>
+                            Venta #<%= venta.IdVenta %>
+                        </option>
+                    <% }); %>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="IdProd" class="form-label">Producto</label>
+                <select name="IdProd" id="IdProd" class="form-select" required>
+                    <% productos.forEach(function(producto) { %>
+                        <option value="<%= producto.IdProd %>" <%= producto.IdProd == devolucion.IdProd ? 'selected' : '' %>>
+                            <%= producto.Nombre %>
+                        </option>
+                    <% }); %>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="Cantidad" class="form-label">Cantidad</label>
+                <input type="number" class="form-control" id="Cantidad" name="Cantidad" value="<%= devolucion.Cantidad %>" required>
+            </div>
+            <div class="mb-3">
+                <label for="Motivo" class="form-label">Motivo</label>
+                <textarea class="form-control" id="Motivo" name="Motivo"><%= devolucion.Motivo %></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="Fecha" class="form-label">Fecha</label>
+                <input type="date" class="form-control" id="Fecha" name="Fecha" value="<%= devolucion.Fecha %>" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Actualizar</button>
+            <a href="/verDevolucion" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</body>
+</html>
