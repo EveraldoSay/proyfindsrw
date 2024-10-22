@@ -8,7 +8,7 @@ app.use(session({
     secret: 'your-secret-key',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false } // Cambia a true si usas HTTPS
+    cookie: { secure: false } // Cambia a true si usaremos HTTPS
 }));
 
 // Crear un nuevo usuario
