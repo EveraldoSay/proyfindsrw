@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Venta</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script>
+        function actualizarNumeroSerie() {
+            const productoId = document.getElementById('producto').value;
+            const numeroSerieInput = document.getElementById('numeroSerie');
+            numeroSerieInput.value = "";
+
+            if (!productoId) return;
+
+            const producto = document.querySelector(`#producto option[value="${productoId}"]`);
+            const numeroSerie = producto.getAttribute('data-serie');
+
+            if (numeroSerie) {
+                numeroSerieInput.value = numeroSerie;
+            } else {
+                numeroSerieInput.value = "No hay número de serie disponible";
+            }
+        }
+
+        function agregarProducto() {
+            const productoId = document.getElementById('producto').value;
+            const cantidad = document.getElementById('cantidad').value;
+            const numeroSerie = document.getElementById('numeroSerie').value;
+
+            if (!productoId || !cantidad || !numeroSerie || numeroSerie === "No hay número de serie disponible") {
+                alert('Por favor, seleccione un producto, ingrese la cantidad y el número de serie.');
+                return;
+            }
+
+            if (isNaN(cantidad) || parseFloat(cantidad) <= 0) {
+                alert('Por favor, ingrese una cantidad válida.');
+                return;
+            }
+
+            const productoNombre = document.querySelector(`#producto option[value="${productoId}"]`).text;
+            const precio = parseFloat(document.querySelector(`#producto option[value="${productoId}"]`).getAttribute('data-precio'));
+            const totalProducto = precio * cantidad;
+
+            const tabla = document.getElementById('productosSeleccionados');
+            const fila = tabla.insertRow();
+            fila.insertCell(0).textContent = productoNombre;
+            fila.insertCell(1).textContent = cantidad;
+            fila.insertCell(2).textContent = numeroSerie;
+            fila.insertCell(3).textContent = precio.toFixed(2);
+            fila.insertCell(4).textContent = totalProducto.toFixed(2);
+
+            actualizarTotal();
+
+            document.getElementById('numeroSerie').value = '';
+        }
+
+        function actualizarTotal() {
+            let subtotal = 0;
+            const filas = document.getElementById('productosSeleccionados').rows;
+
+            for (let i = 0; i < filas.length; i++) {
+                const totalProducto = parseFloat(filas[i].cells[4].textContent);
+                if (!isNaN(totalProducto)) {
+                    subtotal += totalProducto;
+                }
+            }
+
+            const descuento = parseFloat(document.getElementById('descuento').value) || 0;
+            const anticipo = parseFloat(document.getElementById('anticipo').value) || 0;
+
+            const descuentoMonto = (subtotal * descuento) / 100;
+            const subtotalConDescuento = subtotal - descuentoMonto;
+
+            const total = subtotalConDescuento - anticipo;
+
+            document.getElementById('subtotal').textContent = subtotal.toFixed(2);
+            document.getElementById('descuentoAplicado').textContent = descuentoMonto.toFixed(2);
+            document.getElementById('anticipoDado').textContent = anticipo.toFixed(2);
+            document.getElementById('total').textContent = total.toFixed(2);
+        }
+
+        function validarFormulario() {
+            const cantidad = document.getElementById('cantidad').value.trim();
+
+            if (!cantidad || isNaN(cantidad) || parseFloat(cantidad) <= 0) {
+                alert('Por favor, ingrese una cantidad válida.');
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <form action="/guardarVenta" method="POST" class="mt-5" onsubmit="return validarFormulario()">
+            <h1 class="text-center">Registrar Venta</h1>
+
+            <!-- Campos de la venta -->
+            <div class="form-group row">
+                <div class="col-md-4">
+                    <label for="usuario">Usuario:</label>
+                    <select id="usuario" name="IdUsuario" class="form-control" required>
+                        <option value="">Seleccionar Usuario</option>
+                        <% usuarios.forEach(usuario => { %>
+                            <option value="<%= usuario.IdUsuario %>"><%= usuario.Nombre %></option>
+                        <% }) %>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="cliente">Cliente:</label>
+                    <select id="cliente" name="IdCliente" class="form-control" required>
+                        <option value="">Seleccionar Cliente</option>
+                        <% clientes.forEach(cliente => { %>
+                            <option value="<%= cliente.IdCliente %>"><%= cliente.Nombre %></option>
+                        <% }) %>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="formaPago">Forma de Pago:</label>
+                    <select id="formaPago" name="FormaPago" class="form-control" required>
+                        <option value="">Seleccionar Forma de Pago</option>
+                        <option value="Efectivo">Efectivo</option>
+                        <option value="Tarjeta">Tarjeta</option>
+                        <option value="Transferencia">Transferencia</option>
+                        <option value="Credito">Crédito</option> <!-- Opción agregada Crédito -->
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-4">
+                    <label for="anticipo">Anticipo:</label>
+                    <input type="number" id="anticipo" name="Anticipo" class="form-control" min="0" step="0.01" value="0">
+                </div>
+
+                <div class="col-md-4">
+                    <label for="descuento">Descuento (%):</label>
+                    <input type="number" id="descuento" name="Descuento" class="form-control" min="0" step="0.01" value="0">
+                </div>
+
+                <div class="col-md-4">
+                    <label for="cuentaCorriente">Cuenta Corriente:</label>
+                    <input type="checkbox" id="cuentaCorriente" name="CuentaCorriente" class="form-check-input">
+                    <label class="form-check-label" for="cuentaCorriente">Usar Cuenta Corriente</label>
+                </div>
+            </div>
+
+            <hr>
+
+            <!-- Selección de Productos -->
+            <div class="form-group row">
+                <div class="col-md-4">
+                    <label for="producto">Producto:</label>
+                    <select id="producto" name="productos" class="form-control" required onchange="actualizarNumeroSerie()">
+                        <option value="">Seleccionar Producto</option>
+                        <% productos.forEach(producto => { %>
+                            <option value="<%= producto.IdProd %>" data-precio="<%= producto.Precio %>" data-serie="<%= producto.NumeroSerie %>"><%= producto.Nombre %></option>
+                        <% }) %>
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <label for="cantidad">Cantidad:</label>
+                    <input type="number" id="cantidad" name="cantidad" class="form-control" min="1" value="1">
+                </div>
+
+                <div class="col-md-2">
+                    <label for="numeroSerie">Número de Serie:</label>
+                    <input type="text" id="numeroSerie" name="numeroSerie" class="form-control" readonly>
+                </div>
+
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-primary" onclick="agregarProducto()">Agregar Producto</button>
+                </div>
+            </div>
+
+            <!-- Tabla de productos -->
+            <div class="form-group">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Numero de Serie</th>
+                            <th>Precio Unitario</th>
+                            <th>SubTotal</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productosSeleccionados"></tbody>
+                </table>
+            </div>
+
+            <!-- Resumen de la venta -->
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label for="subtotal">Subtotal:</label>
+                    <p id="subtotal">0.00</p>
+                </div>
+                <div class="col-md-6">
+                    <label for="descuentoAplicado">Descuento Aplicado:</label>
+                    <p id="descuentoAplicado">0.00</p>
+                </div>
+                <div class="col-md-6">
+                    <label for="anticipoDado">Anticipo Dado:</label>
+                    <p id="anticipoDado">0.00</p>
+                </div>
+                <div class="col-md-6">
+                    <label for="total">Total:</label>
+                    <p id="total">0.00</p>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-success btn-lg btn-block">Registrar Venta</button>
+        </form>
+    </div>
+</body>
+</html>

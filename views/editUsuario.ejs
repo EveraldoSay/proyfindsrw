@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Usuario</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Editar Usuario</h1>
+        <form action="/updateUsuario" method="POST">
+            <input type="hidden" name="IdUsuario" value="<%= usuario.IdUsuario %>">
+            <div class="form-group">
+                <label for="NombreUsuario">Nombre de Usuario:</label>
+                <input type="text" class="form-control" name="NombreUsuario" value="<%= usuario.NombreUsuario %>"
+                    required>
+            </div>
+            <div class="form-group">
+                <label for="Contrasena">Contraseña:</label>
+                <input type="password" class="form-control" name="Contrasena" value="<%= usuario.Contrasena %>"
+                    required>
+            </div>
+            <div class="form-group">
+                <label for="Rol">Rol:</label>
+                <input type="text" class="form-control" name="Rol" value="<%= usuario.Rol %>" required>
+            </div>
+            <div class="form-group">
+                <label for="Nombre">Nombre:</label>
+                <input type="text" class="form-control" name="Nombre" value="<%= usuario.Nombre %>" required>
+            </div>
+            <div class="form-group">
+                <label for="Apellido">Apellido:</label>
+                <input type="text" class="form-control" name="Apellido" value="<%= usuario.Apellido %>" required>
+            </div>
+            <div class="form-group">
+                <label for="Email">Email:</label>
+                <input type="email" class="form-control" name="Email" value="<%= usuario.Email %>" required>
+            </div>
+            <div class="form-group">
+                <label for="Telefono">Telefono:</label>
+                <input type="text" class="form-control" name="Telefono" value="<%= usuario.Telefono %>" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Actualizar</button>
+            <a href="/verUsuario" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

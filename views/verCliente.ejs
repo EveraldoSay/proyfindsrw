@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Clientes</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css">
+</head>
+<body>
+    
+    <%- include('partials/navbar') %>
+    
+    <div class="container mt-5">
+        <h1 class="mb-4">Lista de Clientes</h1>
+        <a href="/createCliente" class="btn btn-primary mb-4">Crear Cliente</a> 
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th> 
+                    <th>Nombre</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>Correo</th>
+                    <th>Sexo</th>
+                    <th>NIT</th>
+                    <th>CUI</th>
+                    <th>Seg Med</th>
+                    <th>Num Poliza</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% data.forEach(function(cliente) { %>
+                    <tr>
+                        <td><%= cliente.IdCliente %></td> 
+                        <td><%= cliente.Nombre %></td>
+                        <td><%= cliente.Direccion %></td>
+                        <td><%= cliente.Telefono %></td>
+                        <td><%= cliente.Email %></td>
+                        <td><%= cliente.Sexo %></td>
+                        <td><%= cliente.NIT %></td>
+                        <td><%= cliente.CUI %></td>
+                        <td><%= cliente.SeguroMedico %></td>
+                        <td><%= cliente.NumeroPoliza %></td>
+                        <td>
+                            <a href="/editCliente/<%= cliente.IdCliente %>" class="btn btn-warning">Editar</a>
+                            <a href="/deleteCliente/<%= cliente.IdCliente %>" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este cliente?');">Eliminar</a>                                                                                      
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

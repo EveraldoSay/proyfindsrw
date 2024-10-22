@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Usuarios</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    
+    <%- include('partials/navbar') %>
+
+    <div class="container mt-4">
+        <h1>Lista de Usuarios</h1>
+        <a href="/createUsuario" class="btn btn-primary mb-2">Agregar Usuario</a>
+        <table class="table">
+            <thead>
+                <tr>
+                <th>ID</th>
+                <th>Nombre de Usuario</th>
+                <th>Rol</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Email</th>
+                <th>Teléfono</th>
+                <th>Fecha de Registro</th> <!-- Nueva columna -->
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% data.forEach(usuario => { %>
+                <tr>
+                    <td><%= usuario.IdUsuario %></td>
+                    <td><%= usuario.NombreUsuario %></td>
+                    <td><%= usuario.Rol %></td>
+                    <td><%= usuario.Nombre %></td>
+                    <td><%= usuario.Apellido %></td>
+                    <td><%= usuario.Email %></td>
+                    <td><%= usuario.Telefono %></td>
+                    <td><%= usuario.FechaRegistro %></td>
+                    <td>
+                        <a href="/editUsuario/<%= usuario.IdUsuario %>" class="btn btn-warning">Editar</a>
+                        <a href="/deleteUsuario/<%= usuario.IdUsuario %>" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">Eliminar</a>  
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
+

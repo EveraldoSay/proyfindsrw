@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Devoluciones</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css">
+</head>
+<body>
+
+    <%- include('partials/navbar') %>
+
+    <div class="container mt-5">
+        <h1 class="mb-4">Lista de Devoluciones</h1>
+        <a href="/createDevolucion" class="btn btn-primary mb-4">Crear Devolución</a>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID Devolución</th>
+                    <th>ID Venta</th>
+                    <th>ID Producto</th>
+                    <th>Cantidad</th>
+                    <th>Fecha</th>
+                    <th>Motivo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% data.forEach(function(devolucion) { %>
+                    <tr>
+                        <td><%= devolucion.IdDev %></td>
+                        <td><%= devolucion.IdVenta %></td>
+                        <td><%= devolucion.IdProd %></td>
+                        <td><%= devolucion.Cantidad %></td>
+                        <td><%= devolucion.Fecha %></td>
+                        <td><%= devolucion.Motivo %></td>
+                        <td>
+                            <a href="/editDevolucion/<%= devolucion.IdDev %>" class="btn btn-warning">Editar</a>
+                            <a href="/deleteDevolucion/<%= devolucion.IdDev %>" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar esta devolución?');">Eliminar</a>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
