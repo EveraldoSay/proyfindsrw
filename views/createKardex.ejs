@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Kardex</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script>
+        // Función que actualiza la cantidad inicial cuando se selecciona un producto
+        function actualizarCantidadInicial() {
+            const selectProducto = document.querySelector('select[name="IdProd"]');
+            const campoCantidadInicial = document.querySelector('input[name="CantidadInicial"]');
+            const stockSeleccionado = selectProducto.options[selectProducto.selectedIndex].getAttribute('data-stock');
+
+            campoCantidadInicial.value = stockSeleccionado || 0; // Default a 0 si no hay stock
+
+            // Actualizar cantidad existente al cambiar el stock
+            actualizarCantidadExistente();
+        }
+
+        // Función para calcular la cantidad existente
+        function actualizarCantidadExistente() {
+            const cantidadInicial = parseInt(document.querySelector('input[name="CantidadInicial"]').value) || 0;
+            const cantidadVendida = parseInt(document.querySelector('input[name="CantidadVendida"]').value) || 0;
+            const cantidadRecibida = parseInt(document.querySelector('input[name="CantidadRecibida"]').value) || 0;
+
+            // Realiza el cálculo correcto
+            const cantidadExistente = cantidadInicial - cantidadVendida + cantidadRecibida;
+
+            // Asigna el valor calculado al campo de Cantidad Existente
+            document.querySelector('input[name="CantidadExistente"]').value = cantidadExistente; 
+        }
+
+        // Ejecuta las funciones al cargar la página y cuando cambian los inputs
+        window.onload = () => {
+            actualizarCantidadInicial();
+            document.querySelector('input[name="CantidadVendida"]').addEventListener('input', actualizarCantidadExistente);
+            document.querySelector('input[name="CantidadRecibida"]').addEventListener('input', actualizarCantidadExistente);
+        };
+    </script>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Crear Kardex</h1>
+        <form action="/createKardex" method="POST">
+            <div class="form-group">
+                <label for="IdProd">Producto</label>
+                <select name="IdProd" class="form-control" onchange="actualizarCantidadInicial()" required>
+                    <% productos.forEach(producto => { %>
+                        <option value="<%= producto.IdProd %>" data-stock="<%= producto.Stock %>"><%= producto.Nombre %></option>
+                    <% }) %>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="CantidadInicial">Cantidad Inicial</label>
+                <input type="number" class="form-control" name="CantidadInicial" required readonly>
+            </div>
+            <div class="form-group">
+                <label for="CantidadVendida">Cantidad Vendida</label>
+                <input type="number" class="form-control" name="CantidadVendida" value="0">
+            </div>
+            <div class="form-group">
+                <label for="CantidadRecibida">Cantidad Recibida</label>
+                <input type="number" class="form-control" name="CantidadRecibida" value="0">
+            </div>
+            <div class="form-group">
+                <label for="CantidadExistente">Cantidad Existente</label>
+                <input type="number" class="form-control" name="CantidadExistente" readonly> <!-- Campo para mostrar la cantidad existente -->
+            </div>
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <a href="/verKardex" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</body>
+</html>

@@ -12,6 +12,7 @@ const isAuthenticated = require('./middleware/auth');
 const Devoluciones = require('./controllers/Devoluciones');
 const InformeDevoluciones = require('./controllers/InformeDevoluciones');
 const ventas = require('./controllers/ventas');
+const kardex = require('./controllers/Kardex');
 
 
 
@@ -201,6 +202,15 @@ router.get('/regenerarFactura/:IdVenta', ventas.regenerarFactura);
 
 
 
+                    //RUTAS KARDES
 
+// Rutas para el CRUD de Kardex
+router.get('/verKardex', kardex.listKardex);
+router.get('/createKardex', kardex.createKardex);
+router.post('/createKardex', kardex.saveKardex);
+router.get('/editKardex/:id', kardex.editKardex);
+router.post('/updateKardex/:id', kardex.updateKardex);
+router.get('/deleteKardex/:id', kardex.deleteKardex);
+router.get('/crearKardex', kardex.mostrarFormularioKardex);
 
 
