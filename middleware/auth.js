@@ -5,7 +5,7 @@ function isAuthenticated(req, res, next) {
         return next();
     } else {
         // Si no está autenticado, redirigir al inicio de sesión
-        return res.redirect('/login'); // Asegúrate de que esta ruta apunte a tu página de inicio de sesión
+        return res.redirect('/login');
     }
 }
 

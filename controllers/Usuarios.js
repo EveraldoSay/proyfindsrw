@@ -8,7 +8,7 @@ app.use(session({
     secret: 'your-secret-key',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false } // Cambia a true si usaremos HTTPS
+    cookie: { secure: false } // Cambiar a true si usaremos HTTPS
 }));
 
 // Crear un nuevo usuario
@@ -19,7 +19,7 @@ exports.createUsuario = (req, res) => {
 // Guardar un nuevo usuario
 exports.saveUsuario = (req, res) => {
     const { NombreUsuario, Contrasena, Rol, Nombre, Apellido, Email, Telefono } = req.body;
-    const hashedPassword = bcrypt.hashSync(Contrasena, 10); // Encripta la contraseña con un salt de 10 rounds
+    const hashedPassword = bcrypt.hashSync(Contrasena, 10); // Encripta la contraseña
 
     const query = 'INSERT INTO usuarios (NombreUsuario, Contrasena, Rol, Nombre, Apellido, Email, Telefono, FechaRegistro) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())';
     db.query(query, [NombreUsuario, hashedPassword, Rol, Nombre, Apellido, Email, Telefono], (err) => {
@@ -47,7 +47,7 @@ exports.authUsuario = (req, res) => {
         if (results.length > 0) {
             const user = results[0];
 
-            // Comparar la contraseña ingresada con la almacenada
+            // Compararemos la contraseña ingresada con la almacenada
             if (bcrypt.compareSync(Contrasena, user.Contrasena)) {
                 // Contraseña correcta, guardar sesión del usuario
                 req.session.loggedIn = true;
@@ -65,8 +65,6 @@ exports.authUsuario = (req, res) => {
         }
     });
 };
-
-
 
 // Cerrar sesión
 exports.logoutUsuario = (req, res) => {

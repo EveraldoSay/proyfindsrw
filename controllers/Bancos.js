@@ -23,7 +23,7 @@ exports.editBanco = (req, res) => {
     const { id } = req.params;
     db.query('SELECT * FROM bancos WHERE IdBanco = ?', [id], (err, results) => {
         if (err) throw err;
-        res.render('editBanco', { banco: results[0] }); // Cambié 'user' a 'categoria'
+        res.render('editBanco', { banco: results[0] });
     });
 };
 

@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-const session = require('express-session'); // Importa express-session
+const session = require('express-session'); 
 const app = express();
 const router = require('./router');
 
@@ -27,7 +27,7 @@ app.use('/', router);
 
 // Middleware de manejo de errores
 app.use((err, req, res, next) => {
-    console.error(err.stack); // Muestra el error en la consola
+    console.error(err.stack); // Muestramos el error en la consola
     res.status(500).send('Algo salió mal.'); // Envia un mensaje de error
 });
 

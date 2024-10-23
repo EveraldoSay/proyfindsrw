@@ -1,6 +1,4 @@
-// controllers/CatProd.js
-
-const db = require('../database/db'); // Asegúrate de que este sea el archivo de conexión a la base de datos
+const db = require('../database/db'); 
 
 // Listar todas las categorías
 exports.listCatProd = (req, res) => {
@@ -29,7 +27,7 @@ exports.editCatProd = (req, res) => {
     const { id } = req.params;
     db.query('SELECT * FROM categorias WHERE IdCategoria = ?', [id], (err, results) => {
         if (err) throw err;
-        res.render('editCatProd', { categoria: results[0] }); // Usar 'categoria' en lugar de 'categorias'
+        res.render('editCatProd', { categoria: results[0] }); 
     });
 };
 

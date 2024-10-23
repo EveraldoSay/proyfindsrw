@@ -4,7 +4,7 @@ const path = require('path');
 const pdf = require('pdfkit');
 const db = require('../database/db');
 
-// Controlador para generar el informe de devoluciones
+// Controlador informe de devoluciones
 exports.generarInformeDevoluciones = (req, res) => {
     const query = ` 
         SELECT d.IdDev, d.Fecha, d.Cantidad, d.Motivo, p.Nombre AS NombreProducto, c.Nombre AS NombreCliente
@@ -30,38 +30,42 @@ exports.generarInformeDevoluciones = (req, res) => {
         doc.pipe(fs.createWriteStream(rutaArchivo));
         doc.pipe(res);
 
-        // Estilo y detalles del encabezado
+        // Estilo, detalles del encabezado
         doc.image(path.join(__dirname, '..', 'public', 'images', 'LogoUMG.png'), 50, 50, { width: 50 });
         doc.fontSize(20).font('Helvetica-Bold').text('Informe de Devoluciones', { align: 'center' });
         doc.fontSize(12).font('Helvetica').text('Tienda Santa Julia', { align: 'center' });
         doc.text('Fecha de Informe: ' + new Date().toLocaleDateString(), { align: 'center' });
         doc.moveDown(2);
 
-        // Detalles de la tabla 
+        // Detalles tabla 
         const columnaAncho = [60, 80, 60, 120, 120, 120];
         
-        // Encabezados de la tabla
+        // Encabezados 
         doc.fontSize(10).font('Helvetica-Bold');
         
         const encabezados = ['ID', 'Fecha', 'Cantidad', 'Motivo', 'Producto', 'Cliente'];
         
-        let xPos = 50; // Posición inicial X
+        let xPos = 50; // Posición inicial en X
+        let yPos = doc.y; // Guardar la posición inicial
+        
         encabezados.forEach((header, index) => {
-            doc.text(header, xPos, doc.y, { width: columnaAncho[index], align: 'center' });
-            xPos += columnaAncho[index]; // Incrementar la posición X
+            doc.text(header, xPos, yPos, { width: columnaAncho[index], align: 'center' });
+            xPos += columnaAncho[index]; // Incremento de posicion
         });
 
         doc.moveDown(0.5);
         
-        // Línea de separación debajo de los encabezados
+        // Línea separador
         doc.moveTo(50, doc.y).lineTo(600, doc.y).stroke();
+        doc.moveDown(0.5);
 
-        // Iterar a través de las devoluciones y agregar los datos
+
         doc.fontSize(10).font('Helvetica');
         
         devoluciones.forEach(devolucion => {
             xPos = 50; // Reiniciar posición X para cada fila
-            
+            yPos = doc.y; // Fijar posición Y para la fila
+
             // Datos de la devolución
             const datos = [
                 devolucion.IdDev.toString(),
@@ -73,21 +77,27 @@ exports.generarInformeDevoluciones = (req, res) => {
             ];
 
             datos.forEach((dato, index) => {
-                doc.text(dato, xPos, doc.y, { width: columnaAncho[index], align: index < 3 ? 'center' : 'left' });
-                xPos += columnaAncho[index]; // Incrementar la posición X
+                doc.text(dato, xPos, yPos, {
+                    width: columnaAncho[index],
+                    align: index < 3 ? 'center' : 'left', // Alineado
+                    ellipsis: true, // Evitar desborde de texto
+                });
+                xPos += columnaAncho[index]; 
             });
 
+            // agregamos nueva pagina si es necesario
             if (doc.y > 700) {
                 doc.addPage();
+                yPos = doc.y; // Reiniciar en nueva pagina
             }
-            
+
             doc.moveDown(0.5); // Espacio entre filas
         });
 
         // Línea de cierre de la tabla
         doc.moveTo(50, doc.y).lineTo(600, doc.y).stroke();
 
-        // Finalizar el archivo PDF
+        // Fin pdf
         doc.end();
     });
 };

@@ -9,10 +9,9 @@ exports.listProducto = (req, res) => {
 };
 
 // Renderizar el formulario de creación de producto
-// Renderizar el formulario de creación de producto
 exports.createProducto = (req, res) => {
     // Obtener categorias para el selector
-    db.query('SELECT * FROM categorias', (err, categorias) => { // Cambié 'productos' a 'categorias'
+    db.query('SELECT * FROM categorias', (err, categorias) => { 
         if (err) throw err;
         res.render('createProducto', { categorias });
     });
@@ -63,6 +62,6 @@ exports.deleteProducto = (req, res) => {
             console.error('Error al eliminar producto:', err);
             return res.status(500).send('Error al eliminar producto');
         }
-        res.redirect('/verProducto'); // Redirige después de eliminar
+        res.redirect('/verProducto'); 
     });
 };
