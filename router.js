@@ -15,6 +15,7 @@ const ventas = require('./controllers/ventas');
 
 
 
+
                     //CLIENTES
 
 // RUTA PARA MOSTRAR TODOS LOS REGISTROS
@@ -196,6 +197,8 @@ router.get('/generarInformeDevoluciones', InformeDevoluciones.generarInformeDevo
 router.get('/createVenta', ventas.mostrarFormularioVenta);
 router.post('/guardarVenta', ventas.guardarVenta);
 router.get('/regenerarFactura/:IdVenta', ventas.regenerarFactura);
+
+
 
 
 

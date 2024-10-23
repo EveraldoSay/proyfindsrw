@@ -45,9 +45,9 @@ exports.editProducto = (req, res) => {
 
 // Actualizar una producto
 exports.updateProducto = (req, res) => {
-    const { IdProd, IdCategoria, CodigoProducto, Nombre, descripcion, Precio, Impuestos, NumeroSerie, Stock } = req.body;
+    const { IdProd, IdCategoria, CodigoProducto, Nombre, Descripcion, Precio, Impuestos, NumeroSerie, Stock } = req.body;
     db.query('UPDATE productos SET IdCategoria = ?, CodigoProducto = ?, Nombre = ?, Descripcion = ?, Precio = ?, Impuestos = ?, NumeroSerie = ?, Stock = ? WHERE IdProd = ?', 
-    [IdProd, IdCategoria, CodigoProducto, Nombre, descripcion, Precio, Impuestos, NumeroSerie, Stock], 
+    [IdCategoria, CodigoProducto, Nombre, Descripcion, Precio, Impuestos, NumeroSerie, Stock, IdProd], 
     (err) => {
         if (err) throw err;
         res.redirect('/verProducto');
@@ -57,7 +57,7 @@ exports.updateProducto = (req, res) => {
 // Eliminar un producto
 exports.deleteProducto = (req, res) => {
     const id = req.params.id; 
-    db.query('DELETE FROM productos WHERE idProd = ?', [id], (err) => {
+    db.query('DELETE FROM productos WHERE IdProd = ?', [id], (err) => {
         if (err) {
             console.error('Error al eliminar producto:', err);
             return res.status(500).send('Error al eliminar producto');
