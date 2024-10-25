@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-10-2024 a las 09:57:44
+-- Tiempo de generación: 25-10-2024 a las 17:51:48
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -38,8 +38,8 @@ CREATE TABLE `bancos` (
 
 INSERT INTO `bancos` (`IdBanco`, `Nombre`) VALUES
 (1, 'Banrural'),
-(2, 'G&T Continental'),
-(3, 'BAM'),
+(2, 'BAM'),
+(3, 'G&T Continental'),
 (4, 'Industrial'),
 (5, 'ninguno');
 
@@ -59,14 +59,14 @@ CREATE TABLE `categorias` (
 --
 
 INSERT INTO `categorias` (`IdCategoria`, `Nombre`) VALUES
-(1, 'Bebidas Energizantes'),
-(2, 'Refrescos'),
-(3, 'Especias/condimentos'),
-(4, 'Galletas'),
-(5, 'Dulces'),
-(6, 'Golosinas'),
-(7, 'Cereales'),
-(8, 'Consumo diario');
+(1, 'Panes'),
+(2, 'Cereales'),
+(3, 'Bebidas energeticas'),
+(4, 'Gaseosas'),
+(5, 'Especies'),
+(6, 'Dulces'),
+(7, 'Galletas'),
+(8, 'Golosinas');
 
 -- --------------------------------------------------------
 
@@ -92,9 +92,10 @@ CREATE TABLE `clientes` (
 --
 
 INSERT INTO `clientes` (`IdCliente`, `Nombre`, `Direccion`, `Telefono`, `Email`, `Sexo`, `NIT`, `CUI`, `SeguroMedico`, `NumeroPoliza`) VALUES
-(1, 'Ana Elizabeth Garcia', '11-02, Zona 2, Quetzaltenango', '99887121', 'AnaEli@gmail.com', 'M', '7177621-21', '19872890801', 'yy-21', '12'),
-(2, 'Juan Carlos Morales Norato', '123-1, Zona 4, Totonicapan', '91260101', 'JuancaMora@gmail.com', 'H', '8177817-2', '9018927', 'yy-21', '11'),
-(3, 'Ana Guadalupe Fuentes  ', '19-21, Zona 3, Salcaja, Quetzaltenango', '98182811', 'Lupe89@gmail.com', 'M', '918927-2', '91829010801', 'yy-12', '21');
+(1, 'Ana Elizabeth Garcia Estrada', '12-1, Zona 2, Salcajá, Quetzaltenango', '88917122', 'elizaGarcia21@gmail.com', 'M', '887171-2', '718720701', 'yy-1', '12'),
+(2, 'Juan Carlos Morales Norato', '8-2, Zona 1, Totonicapan', '81919191', 'JuancaM2@gmail.com', 'H', '8181-1', '171067617101', 'yy-2', '13'),
+(3, 'Maria Gutierrez Vasquez', '21-2, Zona 4, Quetzaltenango', '71717188', 'MGutierrez43@gmail.com', 'M', '1711218-9', '1718711110401', 'yy-3', '14'),
+(4, 'Joaquin Fernando Hernandez Fernandez', '7-23, Zona 1, Totonicapan', '81909001', 'JHernandez988@gmail.com', 'H', '1897892-1', '182871680801', 'yy-4', '15');
 
 -- --------------------------------------------------------
 
@@ -114,12 +115,8 @@ CREATE TABLE `detalleventas` (
 --
 
 INSERT INTO `detalleventas` (`IdDetVent`, `IdVenta`, `IdProd`, `Cantidad`) VALUES
-(1, 1, 1, 2),
-(2, 2, 2, 4),
-(3, 3, 1, 10),
-(4, 4, 1, 5),
-(5, 5, 1, 1000),
-(6, 6, 1, 200);
+(1, 1, 2, 3),
+(2, 2, 3, 2);
 
 -- --------------------------------------------------------
 
@@ -141,8 +138,8 @@ CREATE TABLE `devoluciones` (
 --
 
 INSERT INTO `devoluciones` (`IdDev`, `IdVenta`, `IdProd`, `Cantidad`, `Fecha`, `Motivo`) VALUES
-(1, 2, 2, 1, '2024-10-25 00:00:00', 'Dañado'),
-(2, 3, 1, 5, '2024-10-25 00:00:00', 'Envases dañados');
+(1, 1, 2, 1, '2024-10-25 00:00:00', 'Envoltura dañada'),
+(2, 2, 3, 1, '2024-10-25 00:00:00', 'Envase dañado');
 
 -- --------------------------------------------------------
 
@@ -165,8 +162,7 @@ CREATE TABLE `kardex` (
 --
 
 INSERT INTO `kardex` (`Id`, `IdProd`, `CantidadInicial`, `CantidadVendida`, `CantidadRecibida`, `CantidadExistente`, `IdUsuario`) VALUES
-(1, 1, 20000, 10, 5, 19995, 1),
-(2, 1, 19995, 10, 15, 20000, 1);
+(1, 2, 5200, 12, 8, 5196, 1);
 
 -- --------------------------------------------------------
 
@@ -185,13 +181,6 @@ CREATE TABLE `pagos` (
   `NumeroReferencia` varchar(255) DEFAULT NULL,
   `IdUsuario` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
-
---
--- Volcado de datos para la tabla `pagos`
---
-
-INSERT INTO `pagos` (`IdPago`, `IdVenta`, `Fecha`, `FormaPago`, `Monto`, `SaldoPendiente`, `IdBanco`, `NumeroReferencia`, `IdUsuario`) VALUES
-(1, 6, '2024-10-25 01:55:00', 'Tarjeta', 20.00, 2278.40, 3, '12', 1);
 
 -- --------------------------------------------------------
 
@@ -216,10 +205,10 @@ CREATE TABLE `productos` (
 --
 
 INSERT INTO `productos` (`IdProd`, `CodigoProducto`, `Nombre`, `Descripcion`, `Precio`, `Impuestos`, `NumeroSerie`, `Stock`, `IdCategoria`) VALUES
-(1, '1', 'Raptor ligth', 'Bebida botella 12 onz', 12.00, 0.90, '123', 18800, 1),
-(2, '2', 'Coca cola', 'Jumbo 3 litros', 21.00, 0.90, '1234', 4801, 2),
-(3, '3', 'Cereal pepino bebe', 'Cereal para niños, caja 20gramos', 21.00, 0.10, '12345', 19000, 7),
-(4, '4', 'Fredo', 'Caja galletas, 12 unidades, 12gramos c/u', 30.00, 0.90, '123456', 3000, 4);
+(1, '1', 'Raptor ligth', 'Botella 12 onz, Sabor chocolate', 12.00, 0.90, '123', 20000, 3),
+(2, '2', 'Pinguinos fresa', 'Bolsa 2 unidades, marinella fresa', 18.00, 0.60, '1234', 5198, 1),
+(3, '3', 'Cocal cola', 'Jumbo 3 litros', 21.00, 0.50, '12345', 10999, 4),
+(4, '4', 'Cereal pepino bebe', 'Cereal para niños, Kelogs, caja 12 kg', 22.00, 0.80, '123456', 10000, 2);
 
 -- --------------------------------------------------------
 
@@ -285,12 +274,8 @@ CREATE TABLE `ventas` (
 --
 
 INSERT INTO `ventas` (`IdVenta`, `IdCliente`, `Fecha`, `FormaPago`, `NumeroFactura`, `Total`, `Anticipo`, `Descuento`, `CuentaCorriente`, `NumeroSerie`, `IdUsuario`) VALUES
-(1, 1, '2024-10-25 01:31:44', 'Efectivo', '20241025-001', 23.78, 0.00, 0.22, b'0', NULL, 1),
-(2, 2, '2024-10-25 01:32:53', 'Tarjeta', '20241025-002', 83.91, 0.00, 0.09, b'0', NULL, 1),
-(3, 3, '2024-10-25 01:35:17', 'Tarjeta', '20241025-003', 119.75, 0.00, 0.25, b'0', NULL, 1),
-(4, 1, '2024-10-25 01:44:26', 'Efectivo', '20241025-004', 59.93, 0.00, 0.07, b'0', NULL, 1),
-(5, 3, '2024-10-25 01:48:18', 'Efectivo', '20241025-005', 11988.00, 0.00, 12.00, b'0', NULL, 1),
-(6, 3, '2024-10-25 01:54:43', 'Credito', '20241025-006', 2298.40, 80.00, 21.60, b'0', NULL, 1);
+(1, 1, '2024-10-25 09:45:55', 'Efectivo', '20241025-001', 53.52, 0.00, 0.48, b'0', NULL, 1),
+(2, 4, '2024-10-25 09:50:02', 'Tarjeta', '20241025-002', 41.67, 0.00, 0.33, b'0', NULL, 1);
 
 --
 -- Índices para tablas volcadas
@@ -398,13 +383,13 @@ ALTER TABLE `categorias`
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `IdCliente` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `IdCliente` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `detalleventas`
 --
 ALTER TABLE `detalleventas`
-  MODIFY `IdDetVent` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `IdDetVent` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `devoluciones`
@@ -416,13 +401,13 @@ ALTER TABLE `devoluciones`
 -- AUTO_INCREMENT de la tabla `kardex`
 --
 ALTER TABLE `kardex`
-  MODIFY `Id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `Id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `pagos`
 --
 ALTER TABLE `pagos`
-  MODIFY `IdPago` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `IdPago` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
@@ -446,7 +431,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `ventas`
 --
 ALTER TABLE `ventas`
-  MODIFY `IdVenta` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `IdVenta` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas
