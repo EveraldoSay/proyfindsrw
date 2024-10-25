@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-10-2024 a las 09:49:34
+-- Tiempo de generación: 25-10-2024 a las 09:57:44
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -40,7 +40,8 @@ INSERT INTO `bancos` (`IdBanco`, `Nombre`) VALUES
 (1, 'Banrural'),
 (2, 'G&T Continental'),
 (3, 'BAM'),
-(4, 'Industrial');
+(4, 'Industrial'),
+(5, 'ninguno');
 
 -- --------------------------------------------------------
 
@@ -117,7 +118,8 @@ INSERT INTO `detalleventas` (`IdDetVent`, `IdVenta`, `IdProd`, `Cantidad`) VALUE
 (2, 2, 2, 4),
 (3, 3, 1, 10),
 (4, 4, 1, 5),
-(5, 5, 1, 1000);
+(5, 5, 1, 1000),
+(6, 6, 1, 200);
 
 -- --------------------------------------------------------
 
@@ -184,6 +186,13 @@ CREATE TABLE `pagos` (
   `IdUsuario` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
+--
+-- Volcado de datos para la tabla `pagos`
+--
+
+INSERT INTO `pagos` (`IdPago`, `IdVenta`, `Fecha`, `FormaPago`, `Monto`, `SaldoPendiente`, `IdBanco`, `NumeroReferencia`, `IdUsuario`) VALUES
+(1, 6, '2024-10-25 01:55:00', 'Tarjeta', 20.00, 2278.40, 3, '12', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -207,7 +216,7 @@ CREATE TABLE `productos` (
 --
 
 INSERT INTO `productos` (`IdProd`, `CodigoProducto`, `Nombre`, `Descripcion`, `Precio`, `Impuestos`, `NumeroSerie`, `Stock`, `IdCategoria`) VALUES
-(1, '1', 'Raptor ligth', 'Bebida botella 12 onz', 12.00, 0.90, '123', 19000, 1),
+(1, '1', 'Raptor ligth', 'Bebida botella 12 onz', 12.00, 0.90, '123', 18800, 1),
 (2, '2', 'Coca cola', 'Jumbo 3 litros', 21.00, 0.90, '1234', 4801, 2),
 (3, '3', 'Cereal pepino bebe', 'Cereal para niños, caja 20gramos', 21.00, 0.10, '12345', 19000, 7),
 (4, '4', 'Fredo', 'Caja galletas, 12 unidades, 12gramos c/u', 30.00, 0.90, '123456', 3000, 4);
@@ -280,7 +289,8 @@ INSERT INTO `ventas` (`IdVenta`, `IdCliente`, `Fecha`, `FormaPago`, `NumeroFactu
 (2, 2, '2024-10-25 01:32:53', 'Tarjeta', '20241025-002', 83.91, 0.00, 0.09, b'0', NULL, 1),
 (3, 3, '2024-10-25 01:35:17', 'Tarjeta', '20241025-003', 119.75, 0.00, 0.25, b'0', NULL, 1),
 (4, 1, '2024-10-25 01:44:26', 'Efectivo', '20241025-004', 59.93, 0.00, 0.07, b'0', NULL, 1),
-(5, 3, '2024-10-25 01:48:18', 'Efectivo', '20241025-005', 11988.00, 0.00, 12.00, b'0', NULL, 1);
+(5, 3, '2024-10-25 01:48:18', 'Efectivo', '20241025-005', 11988.00, 0.00, 12.00, b'0', NULL, 1),
+(6, 3, '2024-10-25 01:54:43', 'Credito', '20241025-006', 2298.40, 80.00, 21.60, b'0', NULL, 1);
 
 --
 -- Índices para tablas volcadas
@@ -376,7 +386,7 @@ ALTER TABLE `ventas`
 -- AUTO_INCREMENT de la tabla `bancos`
 --
 ALTER TABLE `bancos`
-  MODIFY `IdBanco` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `IdBanco` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `categorias`
@@ -394,7 +404,7 @@ ALTER TABLE `clientes`
 -- AUTO_INCREMENT de la tabla `detalleventas`
 --
 ALTER TABLE `detalleventas`
-  MODIFY `IdDetVent` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `IdDetVent` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `devoluciones`
@@ -412,7 +422,7 @@ ALTER TABLE `kardex`
 -- AUTO_INCREMENT de la tabla `pagos`
 --
 ALTER TABLE `pagos`
-  MODIFY `IdPago` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `IdPago` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
@@ -436,7 +446,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `ventas`
 --
 ALTER TABLE `ventas`
-  MODIFY `IdVenta` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `IdVenta` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Restricciones para tablas volcadas
