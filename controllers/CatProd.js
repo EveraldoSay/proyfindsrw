@@ -1,6 +1,6 @@
 const db = require('../database/db'); 
 
-// Listar todas las categorías
+// mostrar categorias
 exports.listCatProd = (req, res) => {
     db.query('SELECT * FROM categorias', (err, results) => {
         if (err) throw err;
@@ -8,12 +8,12 @@ exports.listCatProd = (req, res) => {
     });
 };
 
-// Renderizar el formulario de creación de categoría
+// Renderizar form para crear cat prod
 exports.createCatProd = (req, res) => {
     res.render('createCatProd');
 };
 
-// Guardar una nueva categoría
+// Guardar cat prod
 exports.saveCatProd = (req, res) => {
     const { Nombre } = req.body;
     db.query('INSERT INTO categorias (Nombre) VALUES (?)', [Nombre], (err) => {
@@ -22,7 +22,7 @@ exports.saveCatProd = (req, res) => {
     });
 };
 
-// Editar una categoría existente
+// Editar categoría prod
 exports.editCatProd = (req, res) => {
     const { id } = req.params;
     db.query('SELECT * FROM categorias WHERE IdCategoria = ?', [id], (err, results) => {
@@ -31,7 +31,7 @@ exports.editCatProd = (req, res) => {
     });
 };
 
-// Actualizar una categoría
+// Actualizar categoria prod
 exports.updateCatProd = (req, res) => {
     const { Id, Nombre } = req.body; 
     db.query('UPDATE categorias SET Nombre = ? WHERE IdCategoria = ?', [Nombre, Id], (err) => {
@@ -40,7 +40,7 @@ exports.updateCatProd = (req, res) => {
     });
 };
 
-// Eliminar una categoría
+// Eliminar CAT PROD
 exports.deleteCatProd = (req, res) => {
     const id = req.params.id;
     db.query('DELETE FROM categorias WHERE IdCategoria = ?', [id], (err) => {

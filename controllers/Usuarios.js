@@ -11,12 +11,12 @@ app.use(session({
     cookie: { secure: false } // Cambiar a true si usaremos HTTPS
 }));
 
-// Crear un nuevo usuario
+// Crear nuevo usuario
 exports.createUsuario = (req, res) => {
     res.render('createUsuario');
 };
 
-// Guardar un nuevo usuario
+// Guardar nuevo usuario
 exports.saveUsuario = (req, res) => {
     const { NombreUsuario, Contrasena, Rol, Nombre, Apellido, Email, Telefono } = req.body;
     const hashedPassword = bcrypt.hashSync(Contrasena, 10); // Encripta la contraseña
@@ -87,7 +87,7 @@ exports.listUsuarios = (req, res) => {
 };
 
 
-// Editar un usuario
+// Editar usuario
 exports.editUsuario = (req, res) => {
     const { id } = req.params;
     db.query('SELECT * FROM usuarios WHERE IdUsuario = ?', [id], (err, results) => {
@@ -106,7 +106,7 @@ exports.updateUsuario = (req, res) => {
     });
 };
 
-// Eliminar un usuario
+// Eliminar usuario
 exports.deleteUsuario = (req, res) => {
     const id = req.params.id;
     db.query('DELETE FROM usuarios WHERE IdUsuario = ?', [id], (err) => {

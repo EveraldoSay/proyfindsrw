@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Pagos</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+    <%- include('partials/navbar') %>
+    
+    <div class="container mt-4">
+        <h1>Lista de Pagos</h1>
+        <a href="/createPago" class="btn btn-primary mb-2">Agregar Pago</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID Pago</th>
+                    <th>ID Venta</th>
+                    <th>Fecha</th>
+                    <th>Forma Pago</th>
+                    <th>Monto</th>
+                    <th>Saldo Pendiente</th>
+                    <th>ID Banco</th>
+                    <th>Número de Referencia</th>
+                    <th>ID Usuario</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% data.forEach(pago => { %>
+                    <tr>
+                        <td><%= pago.IdPago %></td>
+                        <td><%= pago.IdVenta %></td>
+                        <td><%= pago.Fecha %></td>
+                        <td><%= pago.FormaPago %></td>
+                        <td><%= pago.Monto %></td>
+                        <td><%= pago.SaldoPendiente %></td>
+                        <td><%= pago.IdBanco %></td>
+                        <td><%= pago.NumeroReferencia %></td>
+                        <td><%= pago.IdUsuario %></td>
+                        <td>
+                            <a href="/editPago/<%= pago.IdPago %>" class="btn btn-warning">Editar</a>
+                            <a href="/deletePago/<%= pago.IdPago %>" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este pago?');">Eliminar</a>  
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

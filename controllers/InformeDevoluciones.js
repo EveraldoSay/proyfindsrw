@@ -4,7 +4,6 @@ const path = require('path');
 const pdf = require('pdfkit');
 const db = require('../database/db');
 
-// Controlador informe de devoluciones
 exports.generarInformeDevoluciones = (req, res) => {
     const query = ` 
         SELECT d.IdDev, d.Fecha, d.Cantidad, d.Motivo, p.Nombre AS NombreProducto, c.Nombre AS NombreCliente

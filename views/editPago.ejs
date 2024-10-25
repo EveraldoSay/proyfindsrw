@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Pago</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Editar Pago</h1>
+        <form action="/updatePago" method="POST">
+            <input type="hidden" name="IdPago" value="<%= pago.IdPago %>">
+            <div class="form-group">
+                <label for="IdVenta">ID Venta</label>
+                <select class="form-control" id="IdVenta" name="IdVenta" required>
+                    <option value="">Selecciona una venta</option>
+                    <% ventas.forEach(venta => { %>
+                        <option value="<%= venta.IdVenta %>" <%= venta.IdVenta === pago.IdVenta ? 'selected' : '' %>><%= venta.IdVenta %> - Total: <%= venta.Total %></option>
+                    <% }) %>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="Fecha">Fecha</label>
+                <input type="datetime-local" class="form-control" id="Fecha" name="Fecha" value="<%= new Date(pago.Fecha).toISOString().slice(0, 16) %>" required>
+            </div>
+            <div class="form-group">
+                <label for="FormaPago">Forma de Pago</label>
+                <select class="form-control" id="FormaPago" name="FormaPago" required>
+                    <option value="Tarjeta" <%= pago.FormaPago === 'Tarjeta' ? 'selected' : '' %>>Tarjeta</option>
+                    <option value="Deposito" <%= pago.FormaPago === 'Deposito' ? 'selected' : '' %>>Deposito</option>
+                    <option value="Efectivo" <%= pago.FormaPago === 'Efectivo' ? 'selected' : '' %>>Efectivo</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="Monto">Monto</label>
+                <input type="text" class="form-control" id="Monto" name="Monto" value="<%= pago.Monto %>" required>
+            </div>
+            <div class="form-group">
+                <label for="IdBanco">ID Banco</label>
+                <select class="form-control" id="IdBanco" name="IdBanco">
+                    <option value="">Selecciona un banco</option>
+                    <% bancos.forEach(banco => { %>
+                        <option value="<%= banco.IdBanco %>" <%= banco.IdBanco === pago.IdBanco ? 'selected' : '' %>><%= banco.Nombre %></option>
+                    <% }) %>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="NumeroReferencia">Número de Referencia</label>
+                <input type="text" class="form-control" id="NumeroReferencia" name="NumeroReferencia" value="<%= pago.NumeroReferencia %>">
+            </div>
+            <div class="form-group">
+                <label for="IdUsuario">ID Usuario</label>
+                <select class="form-control" id="IdUsuario" name="IdUsuario" required>
+                    <option value="">Selecciona un usuario</option>
+                    <% usuarios.forEach(usuario => { %>
+                        <option value="<%= usuario.IdUsuario %>" <%= usuario.IdUsuario === pago.IdUsuario ? 'selected' : '' %>><%= usuario.IdUsuario %></option>
+                    <% }) %>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Actualizar</button>
+            <a href="/verPago" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</body>
+</html>

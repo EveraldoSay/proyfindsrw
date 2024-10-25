@@ -6,6 +6,7 @@
     <title>Formulario de Venta</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script>
+
         function actualizarNumeroSerie() {
             const productoId = document.getElementById('producto').value;
             const numeroSerieInput = document.getElementById('numeroSerie');
@@ -24,9 +25,11 @@
         }
 
         function agregarProducto() {
+
             const productoId = document.getElementById('producto').value;
             const cantidad = document.getElementById('cantidad').value;
             const numeroSerie = document.getElementById('numeroSerie').value;
+            const precio = parseFloat(document.querySelector(`#producto option[value="${productoId}"]`).getAttribute('data-precio'));
 
             if (!productoId || !cantidad || !numeroSerie || numeroSerie === "No hay número de serie disponible") {
                 alert('Por favor, seleccione un producto, ingrese la cantidad y el número de serie.');
@@ -37,11 +40,28 @@
                 alert('Por favor, ingrese una cantidad válida.');
                 return;
             }
+          
+            const data = {
+            productoId,
+            cantidad,
+            precio,
+          };
 
+    // 
+    fetch('/agregarPT', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+        .then(response => response.json())
+        .then(data => {
+        alert(data.message); 
+            
             const productoNombre = document.querySelector(`#producto option[value="${productoId}"]`).text;
-            const precio = parseFloat(document.querySelector(`#producto option[value="${productoId}"]`).getAttribute('data-precio'));
             const totalProducto = precio * cantidad;
-
+ 
             const tabla = document.getElementById('productosSeleccionados');
             const fila = tabla.insertRow();
             fila.insertCell(0).textContent = productoNombre;
@@ -53,6 +73,12 @@
             actualizarTotal();
 
             document.getElementById('numeroSerie').value = '';
+       
+        })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert('Ocurrió un error al guardar el producto.');
+    });
         }
 
         function actualizarTotal() {
@@ -90,14 +116,18 @@
 
             return true;
         }
+        
     </script>
 </head>
 <body>
+    <%- include('partials/navbar') %>
+
+
     <div class="container">
         <form action="/guardarVenta" method="POST" class="mt-5" onsubmit="return validarFormulario()">
             <h1 class="text-center">Registrar Venta</h1>
 
-            <!-- Campos de la venta -->
+            <!-- Campos venta -->
             <div class="form-group row">
                 <div class="col-md-4">
                     <label for="usuario">Usuario:</label>
@@ -126,7 +156,7 @@
                         <option value="Efectivo">Efectivo</option>
                         <option value="Tarjeta">Tarjeta</option>
                         <option value="Transferencia">Transferencia</option>
-                        <option value="Credito">Crédito</option> <!-- Opción agregada Crédito -->
+                        <option value="Credito">Crédito</option> <!-- Opción Crédito -->
                     </select>
                 </div>
             </div>
@@ -155,12 +185,14 @@
             <div class="form-group row">
                 <div class="col-md-4">
                     <label for="producto">Producto:</label>
-                    <select id="producto" name="productos" class="form-control" required onchange="actualizarNumeroSerie()">
+                    <select id="producto" name="producto" class="form-control" required onchange="actualizarNumeroSerie()">
                         <option value="">Seleccionar Producto</option>
                         <% productos.forEach(producto => { %>
                             <option value="<%= producto.IdProd %>" data-precio="<%= producto.Precio %>" data-serie="<%= producto.NumeroSerie %>"><%= producto.Nombre %></option>
                         <% }) %>
+                        
                     </select>
+                    
                 </div>
 
                 <div class="col-md-2">
@@ -174,7 +206,7 @@
                 </div>
 
                 <div class="col-md-2">
-                    <button type="button" class="btn btn-primary" onclick="agregarProducto()">Agregar Producto</button>
+                    <button type="button" class="btn btn-primary" name="agregarPT" onclick="agregarProducto()">Agregar Producto</button>
                 </div>
             </div>
 
@@ -214,8 +246,9 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-success btn-lg btn-block">Registrar Venta</button>
+            <button type="submit" class="btn btn-success btn-lg btn-block" name="guardarVenta">Registrar Venta</button>
         </form>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

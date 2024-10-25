@@ -1,6 +1,6 @@
 const db = require('../database/db');
 
-// Listar todas las devoluciones
+// ver devoluciones
 exports.listDevolucion = (req, res) => {
     db.query('SELECT * FROM devoluciones', (err, results) => {
         if (err) throw err;
@@ -8,7 +8,7 @@ exports.listDevolucion = (req, res) => {
     });
 };
 
-// Crear nueva devolución (formulario)
+// Crear devolucion
 exports.createDevolucion = (req, res) => {
     db.query('SELECT IdVenta FROM ventas', (errVentas, ventas) => {
         if (errVentas) throw errVentas;
@@ -21,24 +21,23 @@ exports.createDevolucion = (req, res) => {
     });
 };
 
-// Guardar nueva devolución
+// Guardar devolución
 exports.saveDevolucion = (req, res) => {
     const { IdVenta, IdProd, Cantidad, Fecha, Motivo } = req.body;
     
-    // Insertar la devolución en la base de datos
+    // Insertar devokucin en bd
     db.query(
         'INSERT INTO devoluciones (IdVenta, IdProd, Cantidad, Fecha, Motivo) VALUES (?, ?, ?, ?, ?)', 
         [IdVenta, IdProd, Cantidad, Fecha, Motivo], 
         (err) => {
             if (err) throw err;
             
-            // Actualizar el Stock del producto correspondiente
+            // Actualizar el Stock del producto 
             db.query(
                 'UPDATE productos SET Stock = Stock + ? WHERE IdProd = ?', 
                 [Cantidad, IdProd],
                 (errUpdate) => {
                     if (errUpdate) throw errUpdate;
-                    // Redirigir a la vista de devoluciones después de actualizar el stock
                     res.redirect('/verDevolucion');
                 }
             );
@@ -46,7 +45,7 @@ exports.saveDevolucion = (req, res) => {
     );
 };
 
-// Editar devolución (formulario)
+// Editar devolución 
 exports.editDevolucion = (req, res) => {
     const { id } = req.params;
     
@@ -87,7 +86,7 @@ exports.updateDevolucion = (req, res) => {
             (errUpdate) => {
                 if (errUpdate) throw errUpdate;
 
-                // Actualizar el Stock: primero restar la cantidad original (porque se está editando)
+                // Actualizar el Stock: primero restar la cantidad original (porque se estámos editando)
                 db.query('UPDATE productos SET Stock = Stock - ? WHERE IdProd = ?', [cantidadOriginal, IdProd], (errRestar) => {
                     if (errRestar) throw errRestar;
 
@@ -95,7 +94,7 @@ exports.updateDevolucion = (req, res) => {
                     db.query('UPDATE productos SET Stock = Stock + ? WHERE IdProd = ?', [Cantidad, IdProd], (errSumar) => {
                         if (errSumar) throw errSumar;
                         
-                        // Redirigir después de actualizar
+                        // Redirigir 
                         res.redirect('/verDevolucion');
                     });
                 });

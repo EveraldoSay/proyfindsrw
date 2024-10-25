@@ -22,7 +22,7 @@ app.use(session({
     cookie: { secure: true }
 }));
 
-// Rutas
+// Ruta principal
 app.use('/', router); 
 
 // Middleware de manejo de errores

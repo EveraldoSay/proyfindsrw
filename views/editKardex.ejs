@@ -5,7 +5,7 @@
     <title>Editar Kardex</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script>
-        // Función que actualiza la cantidad inicial cuando se selecciona un producto
+        // Función actualiza cantidad inicial cuando se selecciona un producto
         function actualizarCantidadInicial() {
             const selectProducto = document.querySelector('select[name="IdProd"]');
             const campoCantidadInicial = document.querySelector('input[name="CantidadInicial"]');
@@ -17,7 +17,7 @@
             actualizarCantidadExistente();
         }
 
-        // Función para calcular la cantidad existente
+        // Función calcular cantidad existente
         function actualizarCantidadExistente() {
             const cantidadInicial = parseInt(document.querySelector('input[name="CantidadInicial"]').value) || 0;
             const cantidadVendida = parseInt(document.querySelector('input[name="CantidadVendida"]').value) || 0;
@@ -65,7 +65,7 @@
             </div>
             <div class="form-group">
                 <label for="CantidadExistente">Cantidad Existente</label>
-                <input type="number" class="form-control" name="CantidadExistente" readonly> <!-- Campo para mostrar la cantidad existente -->
+                <input type="number" class="form-control" name="CantidadExistente" readonly> 
             </div>
             <button type="submit" class="btn btn-success">Actualizar</button>
             <a href="/verKardex" class="btn btn-secondary">Cancelar</a>

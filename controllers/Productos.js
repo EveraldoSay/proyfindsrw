@@ -1,6 +1,6 @@
 const db = require('../database/db');
 
-// Listar todos los producto
+// ver producto
 exports.listProducto = (req, res) => {
     db.query('SELECT * FROM productos', (err, results) => {
         if (err) throw err;
@@ -8,9 +8,9 @@ exports.listProducto = (req, res) => {
     });
 };
 
-// Renderizar el formulario de creación de producto
+// crear producto
 exports.createProducto = (req, res) => {
-    // Obtener categorias para el selector
+    // Obtener categorias registradas eb la entidad categorias
     db.query('SELECT * FROM categorias', (err, categorias) => { 
         if (err) throw err;
         res.render('createProducto', { categorias });
@@ -18,7 +18,7 @@ exports.createProducto = (req, res) => {
 };
 
 
-// Guardar una nueva producto
+// Guardar producto
 exports.saveProducto = (req, res) => {
     const { IdCategoria, CodigoProducto, Nombre, Descripcion, Precio, Impuestos, NumeroSerie, Stock } = req.body;
     db.query('INSERT INTO productos (IdCategoria, CodigoProducto, Nombre, Descripcion, Precio, Impuestos, NumeroSerie, Stock) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', 
@@ -30,7 +30,7 @@ exports.saveProducto = (req, res) => {
 };
 
 
-// Renderizar el formulario de edición de producto
+// editar producto
 exports.editProducto = (req, res) => {
     const { id } = req.params;
     db.query('SELECT * FROM productos WHERE IdProd = ?', [id], (err, results) => {
@@ -43,7 +43,7 @@ exports.editProducto = (req, res) => {
     });
 };
 
-// Actualizar una producto
+// Actualizar producto
 exports.updateProducto = (req, res) => {
     const { IdProd, IdCategoria, CodigoProducto, Nombre, Descripcion, Precio, Impuestos, NumeroSerie, Stock } = req.body;
     db.query('UPDATE productos SET IdCategoria = ?, CodigoProducto = ?, Nombre = ?, Descripcion = ?, Precio = ?, Impuestos = ?, NumeroSerie = ?, Stock = ? WHERE IdProd = ?', 
@@ -54,7 +54,7 @@ exports.updateProducto = (req, res) => {
     });
 };
 
-// Eliminar un producto
+// Eliminar producto
 exports.deleteProducto = (req, res) => {
     const id = req.params.id; 
     db.query('DELETE FROM productos WHERE IdProd = ?', [id], (err) => {

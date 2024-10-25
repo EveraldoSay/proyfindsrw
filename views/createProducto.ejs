@@ -12,7 +12,6 @@
             <div class="form-group">
                 <label for="IdCategoria">Categoría Producto</label>
                 <select name="IdCategoria" class="form-control" required>
-                    <!-- Iterar sobre las categorías pasadas por el controlador -->
                     <% categorias.forEach(categoria => { %>
                         <option value="<%= categoria.IdCategoria %>"><%= categoria.Nombre %></option>
                     <% }) %>

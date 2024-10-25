@@ -14,6 +14,7 @@ const InformeDevoluciones = require('./controllers/InformeDevoluciones');
 const ventas = require('./controllers/ventas');
 const kardex = require('./controllers/Kardex');
 
+const Pago = require('./controllers/Pago');
 
 
 
@@ -192,13 +193,13 @@ router.get('/generarInformeDevoluciones', InformeDevoluciones.generarInformeDevo
 
 
 
-                    //VENTAS
+                        //VENTAS
 
-//router.get('/verVentas', ventas.mostrarVentas);
+router.get('/verVenta', ventas.mostrarVentas);
 router.get('/createVenta', ventas.mostrarFormularioVenta);
+router.post('/agregarPT', ventas.agregarPT);
 router.post('/guardarVenta', ventas.guardarVenta);
-router.get('/regenerarFactura/:IdVenta', ventas.regenerarFactura);
-
+router.get('/generarFactura/:IdVenta', ventas.generarFactura);
 
 
 
@@ -214,3 +215,12 @@ router.get('/deleteKardex/:id', kardex.deleteKardex);
 router.get('/crearKardex', kardex.mostrarFormularioKardex);
 
 
+
+//PAGOS
+
+router.get('/verPago', Pago.listPago);
+router.get('/createPago', Pago.createPago);
+router.post('/createPago', Pago.savePago);
+router.get('/editPago/:id', Pago.editPago);
+router.post('/updatePago', Pago.updatePago);
+router.get('/deletePago/:id', Pago.deletePago);
