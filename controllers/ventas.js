@@ -23,13 +23,12 @@ exports.agregarPT = async(req, res) => {
         );
         res.json({ message: 'Producto guardado exitosamente.' });
     } catch (err) {
-        console.error(err); 
+        console.error(err); // Log the error for debugging
         return res.status(500).json({ message: 'Error al guardar el producto.' });
     }
 };
 
-
-exports.guardarVenta = async (req, res) => {
+exports.guardarVenta = async(req, res) => {
     const { 
         IdCliente, 
         FormaPago, 
@@ -46,7 +45,7 @@ exports.guardarVenta = async (req, res) => {
         if (!Array.isArray(productosSeleccionados) || productosSeleccionados.length === 0) {
             throw new Error('No se han seleccionado productos.');
         }
-
+    try {
         await queryAsync('START TRANSACTION');
       
         let totalVenta = 0;
@@ -61,6 +60,7 @@ exports.guardarVenta = async (req, res) => {
             return result[0] ? result[0].IdVenta : 0; // Retorna el último IdVenta o 0 si no hay ventas
         }
         
+        
         const fecha = new Date();
         const formatofecha = fecha.toLocaleDateString('es-ES', {
             day: '2-digit',
@@ -69,6 +69,7 @@ exports.guardarVenta = async (req, res) => {
           });
 
         function generarNumeroFactura(ultimoSecuencia = 1) {
+            
             const fechaActual = new Date();
             const anio = fechaActual.getFullYear();
             const mes = String(fechaActual.getMonth() + 1).padStart(2, '0'); // Mes con 2 dígitos
@@ -77,38 +78,33 @@ exports.guardarVenta = async (req, res) => {
             const secuencia = String(ultimoSecuencia).padStart(3, '0'); // Secuencia con 3 dígitos
             return `${anio}${mes}${dia}-${secuencia}`;
         }
-        
         const ultimoIdVenta = await obtenerUltimoIdVenta(); 
         const nuevoIdVenta = ultimoIdVenta + 1; 
         const Nnfactura = generarNumeroFactura(nuevoIdVenta);
 
         const resultVenta = await queryAsync(
-            'INSERT INTO ventas (IdCliente, Fecha, FormaPago, NumeroFactura, Total, Anticipo, Descuento, CuentaCorriente, IdUsuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)',
+            'INSERT INTO ventas (IdCliente, Fecha, FormaPago, NumeroFactura , Total, Anticipo, Descuento, CuentaCorriente ,IdUsuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)',
             [IdCliente, fecha, FormaPago, Nnfactura, Total, Anticipo, Descuento, CuentaCorriente ? 1 : 0, IdUsuario]
         );
         
         const ventaId = resultVenta.insertId;
 
         for (const producto of productosSeleccionados) {
-            const productoId = producto.idProd; 
-            const cantidadProducto = producto.Cantidad; 
+            const productoId = producto.idProd; // Adjust if necessary
+            const cantidadProducto = producto.Cantidad; // Adjust if necessary
+        
+
             const precioProducto = producto.Precio;
             const totalProducto = precioProducto * cantidadProducto;
             totalVenta += totalProducto;
-
-            // Insertar en detalleventas
+        
             await queryAsync(
-                'INSERT INTO detalleventas (IdVenta, IdProd, Cantidad) VALUES (?, ?, ?)',
+                'INSERT INTO detalleventas (IdVenta, IdProd, Cantidad) VALUES ( ?, ?, ?)',
                 [ventaId, productoId, cantidadProducto]
-            );
-
-            // Actualizar el stock del producto
-            await queryAsync(
-                'UPDATE productos SET Stock = Stock - ? WHERE IdProd = ?',
-                [cantidadProducto, productoId]
             );
         }
     
+        
         const descuentoAplicado = (totalVenta * Descuento) / 100;
         const totalConDescuento = totalVenta - descuentoAplicado;
         const totalFinal = totalConDescuento - Anticipo;
@@ -117,15 +113,19 @@ exports.guardarVenta = async (req, res) => {
         await queryAsync('COMMIT');
         await queryAsync('TRUNCATE tempdetalle');
         
-        res.redirect('/verVenta');
+            res.redirect('/verVenta');
 
     } catch (error) {
         console.error('Error al guardar la venta:', error);
         await queryAsync('ROLLBACK');
         res.status(500).send('Error al guardar la venta: ' + error.message);
     }
-};
 
+} catch (error) {
+    console.error('Error al guardar la venta:', error);
+    res.status(500).json({ message: 'Error al guardar la venta', error: error.message });
+}
+};
 
 exports.mostrarVentas = async (req, res) => {
     try {
@@ -175,21 +175,23 @@ exports.generarFactura = async (req, res) => {
         doc.pipe(res);
 
 
-        // encabezado empresa
+        // ENCABEZADO
         doc.image(path.join(__dirname, '..', 'public', 'images', 'LogoUMG.png'), 50, 50, { width: 50 });
         doc.fontSize(20).font('Helvetica-Bold').text('Factura', { align: 'center' });
         doc.fontSize(12).font('Helvetica').text('Tienda Santa Julia', { align: 'center' });
         doc.moveDown(2);
 
+        // DETALLES
         const now = new Date();
         doc.text(`Fecha de emisión: ${now.toLocaleString()}`).moveDown();
         doc.font('Helvetica-Bold').text(`Factura No: ${result.NumeroFactura}`, { align: 'center' }).moveDown();
 
-        //  usuario y cliente info
+        // DATOS CLIENTE
         doc.text(`Cliente: ${result2.Nombre}`).moveDown(); 
-        doc.text(`NIT: 1555`).moveDown(); 
-        doc.text(`Tel: 59435730`).moveDown(); 
-        doc.text(`Dirección: 4ta calle ave final zona 10`).moveDown(4); 
+        doc.text(`NIT: ${result2.NIT}`).moveDown(); 
+        doc.text(`Direccion: ${result2.Direccion}`).moveDown(); 
+        doc.text(`Tel: ${result2.Telefono}`).moveDown(); 
+        
 
 // Detalles de la tabla 
 const columnaAncho = [60, 80, 60, 120];
