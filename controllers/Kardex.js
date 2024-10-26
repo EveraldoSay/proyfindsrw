@@ -21,15 +21,23 @@ exports.saveKardex = (req, res) => {
 
         const cantidadInicial = result.length > 0 ? result[0].CantidadExistente : parseInt(req.body.CantidadInicial, 10);
         const CantidadExistente = cantidadInicial - cantidadVendida + cantidadRecibida;
+        
         const sqlInsertKardex = `INSERT INTO kardex (IdProd, CantidadInicial, CantidadVendida, CantidadRecibida, CantidadExistente, IdUsuario)
                                  VALUES (?, ?, ?, ?, ?, ?)`;
 
         db.query(sqlInsertKardex, [IdProd, cantidadInicial, cantidadVendida, cantidadRecibida, CantidadExistente, IdUsuario], (err) => {
             if (err) throw err;
-            res.redirect('/verKardex');
+
+            // Actualizamos el stock en la tabla productos
+            const sqlUpdateProductStock = 'UPDATE productos SET Stock = ? WHERE IdProd = ?';
+            db.query(sqlUpdateProductStock, [CantidadExistente, IdProd], (err) => {
+                if (err) throw err;
+                res.redirect('/verKardex');
+            });
         });
     });
 };
+
 
 
 // Mostrar formulario de edición
@@ -78,18 +86,25 @@ exports.updateKardex = (req, res) => {
 
         const cantidadInicial = result.length > 0 ? result[0].CantidadExistente : 0;
         const CantidadExistente = cantidadInicial - cantidadVendida + cantidadRecibida;
-        const sql = `UPDATE kardex SET IdProd = ?, CantidadInicial = ?, CantidadVendida = ?, CantidadRecibida = ?, CantidadExistente = ?
-                     WHERE Id = ?`;
+        
+        const sqlUpdateKardex = `UPDATE kardex SET IdProd = ?, CantidadInicial = ?, CantidadVendida = ?, CantidadRecibida = ?, CantidadExistente = ?
+                                 WHERE Id = ?`;
 
-        db.query(sql, [IdProd, cantidadInicial, cantidadVendida, cantidadRecibida, CantidadExistente, Id], (err) => {
+        db.query(sqlUpdateKardex, [IdProd, cantidadInicial, cantidadVendida, cantidadRecibida, CantidadExistente, Id], (err) => {
             if (err) {
                 console.error('Error al actualizar el kardex:', err);
                 return res.status(500).send("Algo salió mal");
             }
-            res.redirect('/verKardex');
+
+            const sqlUpdateProductStock = 'UPDATE productos SET Stock = ? WHERE IdProd = ?';
+            db.query(sqlUpdateProductStock, [CantidadExistente, IdProd], (err) => {
+                if (err) throw err;
+                res.redirect('/verKardex');
+            });
         });
     });
 };
+
 
 
 // Ver lista de kardex
